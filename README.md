@@ -11,7 +11,8 @@ La aplicación permite registrar marcaciones incluso cuando no hay conexión a i
    npx serve public
    ```
 2. Abrir `http://localhost:3000` (u otro puerto según la herramienta utilizada).
-3. Registrar marcaciones desde el botón **Registrar Marcación**.
-4. Si se realiza una marcación sin conexión, esta se enviará automáticamente al restaurar la conectividad.
+3. Registrar marcaciones usando los botones **Registrar Entrada** y **Registrar Salida**.
+4. La interfaz se adapta a dispositivos móviles y de escritorio.
+5. Si se realiza una marcación sin conexión, esta se enviará automáticamente al restaurar la conectividad.
 
 El punto de red al que se envían las marcaciones es `/api/clock`, que deberá implementarse en un servidor para recibir los datos.

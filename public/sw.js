@@ -3,6 +3,7 @@ const URLS = [
   '/',
   '/index.html',
   '/main.js',
+  '/styles.css',
   'https://unpkg.com/react@18/umd/react.production.min.js',
   'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js'
 ];

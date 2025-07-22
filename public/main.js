@@ -2,7 +2,9 @@ const STORAGE_KEY = 'clock_entries';
 
 function loadEntries() {
   const stored = localStorage.getItem(STORAGE_KEY);
-  return stored ? JSON.parse(stored) : [];
+  if (!stored) return [];
+  const parsed = JSON.parse(stored);
+  return parsed.map(e => e.type ? e : { ...e, type: 'entrada' });
 }
 
 function saveEntries(entries) {
@@ -54,16 +56,14 @@ function App() {
     return () => window.removeEventListener('online', handleOnline);
   }, []);
 
-  function addEntry() {
+  function addEntry(type) {
     const entry = {
       id: Date.now(),
       timestamp: new Date().toISOString(),
+      type,
       synced: navigator.onLine
     };
-    setEntries(prev => {
-      const updated = [...prev, entry];
-      return updated;
-    });
+    setEntries(prev => [...prev, entry]);
     if (navigator.onLine) {
       sendEntry(entry).then(ok => {
         if (ok) {
@@ -73,13 +73,17 @@ function App() {
     }
   }
 
-  return React.createElement('div', null,
+  return React.createElement('div', { id: 'app' },
     React.createElement('h1', null, 'Marcaciones de Empleados'),
-    React.createElement('button', { onClick: addEntry }, 'Registrar Marcación'),
+    React.createElement('div', { className: 'buttons' },
+      React.createElement('button', { className: 'entrada', onClick: () => addEntry('entrada') }, 'Registrar Entrada'),
+      React.createElement('button', { className: 'salida', onClick: () => addEntry('salida') }, 'Registrar Salida')
+    ),
     React.createElement('ul', null,
-      entries.map(e =>
-        React.createElement('li', { key: e.id }, `${e.timestamp} - ${e.synced ? 'enviado' : 'pendiente'}`)
-      )
+      entries.map(e => {
+        const text = `${new Date(e.timestamp).toLocaleString()} - ${e.type} - ${e.synced ? 'enviado' : 'pendiente'}`;
+        return React.createElement('li', { key: e.id }, text);
+      })
     )
   );
 }
